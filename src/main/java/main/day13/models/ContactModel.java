@@ -1,11 +1,9 @@
 package main.day13.models;
 
-import java.io.Serializable;
-
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContactModel implements Serializable {
+public class ContactModel {
     private String name;
     private String email;
     private String phoneNumber;

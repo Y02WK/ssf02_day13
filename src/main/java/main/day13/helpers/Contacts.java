@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -62,7 +63,7 @@ public class Contacts {
         if (dir.mkdirs()) {
             return;
         } else {
-            logger.error("Failed to create directory");
+            logger.error("Failed to create directory or directory already exists");
         }
     }
 
@@ -70,7 +71,7 @@ public class Contacts {
     private void addIDtoSet() {
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(this.dirPath)) {
             for (Path p : ds) {
-                this.generatedIDs.add(p.toString());
+                this.generatedIDs.add(p.getFileName().toString());
             }
         } catch (IOException e) {
             logger.error("Failed to read from directory.", e);
@@ -89,9 +90,13 @@ public class Contacts {
     }
 
     // creates contact file
-    public boolean createContactFile(List<String> contactFields) {
+    public boolean createContactFile(ContactModel contactModel) {
         String contactID = generateRandomId();
         Path filePath = dirPath.resolve(contactID);
+        List<String> contactFields = Arrays.asList(
+                contactModel.getName(),
+                contactModel.getEmail(),
+                contactModel.getPhoneNumber());
 
         // create and write to file
         try {
@@ -105,9 +110,8 @@ public class Contacts {
 
     public ContactModel getContactFile(String id) {
         Path filePath = dirPath.resolve(id);
-        if (!Files.exists(filePath)) {
-            return null;
-        } else {
+        // check if id exists
+        if (this.generatedIDs.contains(id)) {
             ContactModel contactModel = new ContactModel();
             try {
                 List<String> contactFields = Files.readAllLines(filePath);
@@ -119,7 +123,7 @@ public class Contacts {
             }
             return contactModel;
         }
-
+        return null;
     }
 
 }

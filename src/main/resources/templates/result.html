@@ -7,10 +7,12 @@
     <title>Document</title>
   </head>
   <body>
+    <p data-th-if="${successMsg != null}" data-th-text="${successMsg}"></p>
     <ul>
-      <li data-th-text="${name}"></li>
-      <li data-th-text="${email}"></li>
-      <li data-th-text="${phoneNumber}"></li>
+      <li data-th-text="'Name: '+ ${contact.name}"></li>
+      <li data-th-text="'Email: ' + ${contact.email}"></li>
+      <li data-th-text="'Phone number: ' + ${contact.phoneNumber}"></li>
     </ul>
+    <a href="/">Back to Home</a>
   </body>
 </html>
