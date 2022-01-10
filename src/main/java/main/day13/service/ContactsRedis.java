@@ -13,15 +13,15 @@ import main.day13.models.ContactModel;
  * ContactsRedis
  */
 @Component
-public class ContactsRedis {
+public class ContactsRedis implements ContactsRepo {
     @Autowired
     private RedisTemplate<String, ContactModel> template;
 
-    public void storeToRedis(ContactModel contactModel) {
+    public void saveContact(ContactModel contactModel) {
         template.opsForValue().set(contactModel.getID(), contactModel);
     }
 
-    public ContactModel getFromRedis(String id) throws ContactNotFoundException {
+    public ContactModel getContact(String id) throws ContactNotFoundException {
         Optional<ContactModel> contactOpt = Optional.ofNullable(template.opsForValue().get(id));
         if (contactOpt.isPresent()) {
             return contactOpt.get();

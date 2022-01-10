@@ -29,7 +29,7 @@ public class ContactController {
                 contactModel.getPhoneNumber());
 
         // store to redis
-        contactsRedis.storeToRedis(resultModel);
+        contactsRedis.saveContact(resultModel);
 
         // render view
         model.addAttribute("contact", resultModel);

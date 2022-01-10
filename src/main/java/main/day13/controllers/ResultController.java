@@ -27,7 +27,7 @@ public class ResultController {
             HttpServletResponse response) {
 
         try {
-            ContactModel contactModel = contactsRedis.getFromRedis(id);
+            ContactModel contactModel = contactsRedis.getContact(id);
             model.addAttribute("contact", contactModel);
             return "result";
         } catch (ContactNotFoundException e) {

@@ -35,3 +35,4 @@ build/
 ### Mac ###
 .DS_STORE
 opt/*
+application.properties

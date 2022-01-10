@@ -1,4 +1,6 @@
 package main.day13.config;
+        final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().usePooling()
+                .poolConfig(poolConfig).build();
 
 import java.util.Optional;
 
@@ -53,7 +55,8 @@ public class RedisConfig {
         poolConfig.setMaxTotal(jedisPoolMaxIdle);
 
         // create client and factory
-        final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
+        final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().usePooling()
+                .poolConfig(poolConfig).build();
         final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
         jedisFac.afterPropertiesSet();
 
