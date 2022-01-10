@@ -1,6 +1,4 @@
 package main.day13.config;
-        final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().usePooling()
-                .poolConfig(poolConfig).build();
 
 import java.util.Optional;
 
