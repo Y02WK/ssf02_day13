@@ -1,6 +1,5 @@
 package main.day13.helpers;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
@@ -34,7 +33,7 @@ public class Contacts {
     public Contacts(ApplicationArguments args) {
         this.dirPath = validateArgs(args);
         checkDirectory();
-        addIDtoSet();
+        addIDstoSet();
     }
 
     // args processing
@@ -52,23 +51,17 @@ public class Contacts {
 
     // checks and create if directory does not exist
     private void checkDirectory() {
-        // if (!Files.exists(this.dirPath)) {
-        // try {
-        // Files.createDirectories(this.dirPath);
-        // } catch (IOException e) {
-        // logger.error("Failed to create directory", e);
-        // }
-        // }
-        File dir = this.dirPath.toFile();
-        if (dir.mkdirs()) {
-            return;
-        } else {
-            logger.error("Failed to create directory or directory already exists");
+        if (!Files.exists(this.dirPath)) {
+            try {
+                Files.createDirectories(this.dirPath);
+            } catch (IOException e) {
+                logger.error("Failed to create directory", e);
+            }
         }
     }
 
     // add all file names to set
-    private void addIDtoSet() {
+    private void addIDstoSet() {
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(this.dirPath)) {
             for (Path p : ds) {
                 this.generatedIDs.add(p.getFileName().toString());
@@ -79,7 +72,7 @@ public class Contacts {
     }
 
     // optimized id generator
-    private synchronized String generateID(int numchars) {
+    public synchronized String generateID(int numchars) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         while (sb.length() < numchars) {
@@ -95,8 +88,7 @@ public class Contacts {
 
     // creates contact file
     public boolean createContactFile(ContactModel contactModel) {
-        String contactID = generateID(8);
-        Path filePath = dirPath.resolve(contactID);
+        Path filePath = dirPath.resolve(contactModel.getID());
         List<String> contactFields = Arrays.asList(
                 contactModel.getName(),
                 contactModel.getEmail(),

@@ -1,10 +1,15 @@
 package main.day13.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import main.day13.helpers.Contacts;
 
 @Component
 public class ContactModel {
-    private String id;
+    @Autowired
+    private Contacts contacts;
+    private final String id = contacts.generateID(8);
     private String name;
     private String email;
     private String phoneNumber;
@@ -20,10 +25,6 @@ public class ContactModel {
 
     public String getID() {
         return this.id;
-    }
-
-    public void setID(String id) {
-        this.id = id;
     }
 
     public String getName() {

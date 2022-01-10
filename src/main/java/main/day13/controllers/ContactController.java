@@ -22,13 +22,17 @@ public class ContactController {
     @PostMapping("/contact")
     @ResponseStatus(code = HttpStatus.CREATED)
     public String handleForm(@ModelAttribute ContactModel contactModel, Model model) {
-        contacts.createContactFile(contactModel);
-        // separation of the model
-        // ContactModel resultModel = new ContactModel(contactModel.getName(),
-        // contactModel.getEmail(),
-        // contactModel.getPhoneNumber());
-        model.addAttribute("contact", contactModel);
-        model.addAttribute("successMsg", "Contact saved!");
-        return "result";
+        if (contacts.createContactFile(contactModel)) {
+            // separation of the model
+            ContactModel resultModel = new ContactModel(contactModel.getName(),
+                    contactModel.getEmail(),
+                    contactModel.getPhoneNumber());
+            model.addAttribute("contact", resultModel);
+            model.addAttribute("successMsg", "Contact saved!");
+            return "result";
+        } else {
+            model.addAttribute("errorMessage", "Contact saved!");
+            return "error";
+        }
     }
 }
