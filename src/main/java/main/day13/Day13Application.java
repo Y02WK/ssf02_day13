@@ -9,7 +9,7 @@ import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import main.day13.utils.Contacts;
+import main.day13.service.Contacts;
 
 @SpringBootApplication
 public class Day13Application {

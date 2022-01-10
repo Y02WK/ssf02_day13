@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import main.day13.models.ContactModel;
-import main.day13.utils.ContactsRedis;
+import main.day13.service.ContactsRedis;
 
 /**
  * ContactController
@@ -29,7 +29,7 @@ public class ContactController {
                 contactModel.getPhoneNumber());
 
         // store to redis
-        contactsRedis.storeToRedis(contactModel);
+        contactsRedis.storeToRedis(resultModel);
 
         // render view
         model.addAttribute("contact", resultModel);

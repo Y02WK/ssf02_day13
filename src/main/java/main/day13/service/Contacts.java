@@ -1,4 +1,4 @@
-package main.day13.utils;
+package main.day13.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

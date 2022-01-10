@@ -4,9 +4,6 @@ import static main.day13.utils.IDGenerator.generateID;
 
 import java.io.Serializable;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class ContactModel implements Serializable {
     private final String id;
     private String name;
