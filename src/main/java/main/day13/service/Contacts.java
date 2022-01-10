@@ -1,4 +1,4 @@
-package main.day13.utils;
+package main.day13.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +19,7 @@ import main.day13.models.ContactModel;
  * Contacts
  */
 @Component
-public class Contacts {
+public class Contacts implements ContactsRepo {
     // handles all file handling for the application
     private Logger logger = LoggerFactory.getLogger(Contacts.class);
     private final Path dirPath;
@@ -43,7 +43,7 @@ public class Contacts {
     }
 
     // creates contact file
-    public boolean createContactFile(ContactModel contactModel) {
+    public void saveContact(ContactModel contactModel) {
         Path filePath = dirPath.resolve(contactModel.getID());
         List<String> contactFields = Arrays.asList(
                 contactModel.getName(),
@@ -55,12 +55,10 @@ public class Contacts {
             Files.write(filePath, contactFields, StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Failed to create file", e);
-            return false;
         }
-        return true;
     }
 
-    public ContactModel getContactFile(String id) {
+    public ContactModel getContact(String id) {
         Path filePath = dirPath.resolve(id);
         // check if id exists
         ContactModel contactModel = new ContactModel();
@@ -71,7 +69,7 @@ public class Contacts {
             contactModel.setPhoneNumber(contactFields.get(2));
         } catch (IOException e) {
             logger.error("Failed to read file", e);
-            return null;
+            throw new
         }
         return contactModel;
     }

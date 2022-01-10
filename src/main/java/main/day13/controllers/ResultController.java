@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import main.day13.exceptions.ContactNotFoundException;
 import main.day13.models.ContactModel;
-import main.day13.utils.Contacts;
+import main.day13.service.Contacts;
 
 /**
  * ResultController

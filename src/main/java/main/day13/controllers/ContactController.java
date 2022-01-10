@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import main.day13.models.ContactModel;
-import main.day13.utils.Contacts;
+import main.day13.service.Contacts;
 
 /**
  * ContactController
