@@ -4,9 +4,27 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContactModel {
+    private String id;
     private String name;
     private String email;
     private String phoneNumber;
+
+    public ContactModel() {
+    }
+
+    public ContactModel(String name, String email, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getID() {
+        return this.id;
+    }
+
+    public void setID(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return this.name;

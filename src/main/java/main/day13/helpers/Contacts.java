@@ -78,20 +78,24 @@ public class Contacts {
         }
     }
 
-    // returns a randomly generated 8-digit hex value and adds it to a set
-    private String generateRandomId() {
+    // optimized id generator
+    private synchronized String generateID(int numchars) {
         Random random = new Random();
-        String generatedID;
+        StringBuilder sb = new StringBuilder();
+        while (sb.length() < numchars) {
+            sb.append(Integer.toHexString(random.nextInt()));
+        }
 
-        do {
-            generatedID = Integer.toHexString(random.nextInt());
-        } while (!this.generatedIDs.add(generatedID));
-        return generatedID;
+        if (!this.generatedIDs.add(sb.toString().substring(0, numchars))) {
+            return generateID(8);
+        }
+
+        return sb.toString().substring(0, numchars);
     }
 
     // creates contact file
     public boolean createContactFile(ContactModel contactModel) {
-        String contactID = generateRandomId();
+        String contactID = generateID(8);
         Path filePath = dirPath.resolve(contactID);
         List<String> contactFields = Arrays.asList(
                 contactModel.getName(),
