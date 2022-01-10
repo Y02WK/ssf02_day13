@@ -41,7 +41,6 @@ public class Contacts {
         List<String> dataDir = args.getOptionValues("dataDir");
         if (dataDir == null || dataDir.isEmpty()) {
             System.err.println("No data directory specified. Exiting.");
-            System.exit(1);
         } else {
             logger.info(dataDir.get(0));
             return Path.of(dataDir.get(0));
@@ -72,14 +71,16 @@ public class Contacts {
     }
 
     // optimized id generator
-    public synchronized String generateID(int numchars) {
+    private synchronized String generateID(int numchars) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
+
+        //
         while (sb.length() < numchars) {
             sb.append(Integer.toHexString(random.nextInt()));
         }
 
-        if (!this.generatedIDs.add(sb.toString().substring(0, numchars))) {
+        if (!generatedIDs.add(sb.toString().substring(0, numchars))) {
             return generateID(8);
         }
 
@@ -88,7 +89,7 @@ public class Contacts {
 
     // creates contact file
     public boolean createContactFile(ContactModel contactModel) {
-        Path filePath = dirPath.resolve(contactModel.getID());
+        Path filePath = dirPath.resolve(generateID(8));
         List<String> contactFields = Arrays.asList(
                 contactModel.getName(),
                 contactModel.getEmail(),
