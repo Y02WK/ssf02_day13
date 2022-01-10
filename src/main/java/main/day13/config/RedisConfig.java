@@ -12,24 +12,26 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import main.day13.models.ContactModel;
+
 @Configuration
-public class AppConfig {
+public class RedisConfig {
     @Value("${spring.redis.host}")
     private String redisHost;
 
     @Value("${spring.redis.port}")
     private Optional<Integer> redisPort;
 
-    @Value("${spring.redis.database}")
-    private Integer redisDatabase;
+    @Value("${spring.redis.password}")
+    private String redisPassword;
 
     @Bean
     @Scope("singleton")
-    public RedisTemplate<String, Object> createRedisTemplate() {
+    public RedisTemplate<String, ContactModel> createRedisTemplate() {
         // configuring the database
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setDatabase(redisDatabase);
         config.setHostName(redisHost);
+        config.setPassword(redisPassword);
         if (redisPort.isPresent()) {
             config.setPort(redisPort.get());
         }
@@ -39,7 +41,7 @@ public class AppConfig {
         jedisFac.afterPropertiesSet();
 
         // create template for
-        final RedisTemplate<String, Object> template = new RedisTemplate<>();
+        final RedisTemplate<String, ContactModel> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisFac);
         template.setKeySerializer(new StringRedisSerializer()); // keys in utf-8
         template.setValueSerializer(new StringRedisSerializer()); // optional value serializer

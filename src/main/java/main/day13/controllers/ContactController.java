@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import main.day13.models.ContactModel;
-import main.day13.utils.Contacts;
+import main.day13.utils.ContactsRedis;
 
 /**
  * ContactController
@@ -17,23 +17,23 @@ import main.day13.utils.Contacts;
 @Controller
 public class ContactController {
     @Autowired
-    private Contacts contacts;
+    private ContactsRedis contactsRedis;
 
     @PostMapping("/contact")
     @ResponseStatus(code = HttpStatus.CREATED)
     public String handleForm(@ModelAttribute ContactModel contactModel, Model model) {
-        if (contacts.createContactFile(contactModel)) {
-            // separation of the model
-            ContactModel resultModel = new ContactModel(contactModel.getID(),
-                    contactModel.getName(),
-                    contactModel.getEmail(),
-                    contactModel.getPhoneNumber());
-            model.addAttribute("contact", resultModel);
-            model.addAttribute("successMsg", "Contact saved!");
-            return "result";
-        } else {
-            model.addAttribute("errorMessage", "Contact saved!");
-            return "error";
-        }
+        // separation of the model
+        ContactModel resultModel = new ContactModel(contactModel.getID(),
+                contactModel.getName(),
+                contactModel.getEmail(),
+                contactModel.getPhoneNumber());
+
+        // store to redis
+        contactsRedis.storeToRedis(contactModel);
+
+        // render view
+        model.addAttribute("contact", resultModel);
+        model.addAttribute("successMsg", "Contact saved!");
+        return "result";
     }
 }

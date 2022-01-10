@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import main.day13.exceptions.ContactNotFoundException;
 import main.day13.models.ContactModel;
-import main.day13.utils.Contacts;
+import main.day13.utils.ContactsRedis;
 
 /**
  * ResultController
@@ -18,7 +18,7 @@ import main.day13.utils.Contacts;
 @Controller
 public class ResultController {
     @Autowired
-    private Contacts contacts;
+    private ContactsRedis contactsRedis;
 
     @GetMapping("contact/{id}")
     public String retrieveContact(
@@ -26,14 +26,10 @@ public class ResultController {
             Model model,
             HttpServletResponse response) {
 
-        ContactModel contactModel = contacts.getContactFile(id);
         try {
-            if (contactModel != null) {
-                model.addAttribute("contact", contactModel);
-                return "result";
-            } else {
-                throw new ContactNotFoundException("Contact not found");
-            }
+            ContactModel contactModel = contactsRedis.getFromRedis(id);
+            model.addAttribute("contact", contactModel);
+            return "result";
         } catch (ContactNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             model.addAttribute("userid", id);
