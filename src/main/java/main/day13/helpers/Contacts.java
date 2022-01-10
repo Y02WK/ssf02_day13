@@ -40,7 +40,7 @@ public class Contacts {
     private Path validateArgs(ApplicationArguments args) {
         List<String> dataDir = args.getOptionValues("dataDir");
         if (dataDir == null || dataDir.isEmpty()) {
-            System.err.println("No data directory specified. Exiting.");
+            System.err.println("No data directory specified.");
         } else {
             logger.info(dataDir.get(0));
             return Path.of(dataDir.get(0));
