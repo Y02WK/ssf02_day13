@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import main.day13.helpers.Contacts;
 import main.day13.models.ContactModel;
+import main.day13.utils.Contacts;
 
 /**
  * ContactController
@@ -24,7 +24,8 @@ public class ContactController {
     public String handleForm(@ModelAttribute ContactModel contactModel, Model model) {
         if (contacts.createContactFile(contactModel)) {
             // separation of the model
-            ContactModel resultModel = new ContactModel(contactModel.getName(),
+            ContactModel resultModel = new ContactModel(contactModel.getID(),
+                    contactModel.getName(),
                     contactModel.getEmail(),
                     contactModel.getPhoneNumber());
             model.addAttribute("contact", resultModel);

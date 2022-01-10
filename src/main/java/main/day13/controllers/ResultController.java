@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import main.day13.exceptions.ContactNotFoundException;
-import main.day13.helpers.Contacts;
 import main.day13.models.ContactModel;
+import main.day13.utils.Contacts;
 
 /**
  * ResultController
