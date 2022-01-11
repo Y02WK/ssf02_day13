@@ -11,7 +11,7 @@ import main.day13.models.ContactModel;
 @RequestMapping("/")
 public class FormResource {
 
-    @GetMapping()
+    @GetMapping
     public String displayForm(Model model) {
         ContactModel contact = new ContactModel();
         model.addAttribute("contact", contact);
