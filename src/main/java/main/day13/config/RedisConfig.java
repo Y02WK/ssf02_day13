@@ -10,7 +10,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import main.day13.models.ContactModel;
@@ -54,11 +54,10 @@ public class RedisConfig {
         final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
         jedisFac.afterPropertiesSet();
 
-        // create template for
         final RedisTemplate<String, ContactModel> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisFac);
         template.setKeySerializer(new StringRedisSerializer()); // keys in utf-8
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(ContactModel.class));
+        template.setValueSerializer(new JdkSerializationRedisSerializer(getClass().getClassLoader()));
         return template;
     }
 }
